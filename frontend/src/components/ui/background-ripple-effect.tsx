@@ -28,7 +28,7 @@ export const BackgroundRippleEffect = ({
       const col = Math.max(0, Math.min(cols - 1, Math.floor(x / cellSize)))
       const row = Math.max(0, Math.min(rows - 1, Math.floor(y / cellSize)))
       setClickedCell({ row, col })
-      setRippleKey((k) => k + 1)
+      setRippleKey((k: number) => k + 1)
     }
     window.addEventListener('click', handleClick)
     return () => window.removeEventListener('click', handleClick)
@@ -44,7 +44,7 @@ export const BackgroundRippleEffect = ({
       const row = Math.floor(Math.random() * rows)
       const col = Math.floor(Math.random() * cols)
       setClickedCell({ row, col })
-      setRippleKey((k) => k + 1)
+      setRippleKey((k: number) => k + 1)
     }, 4000)
     return () => clearInterval(id)
   }, [])
@@ -68,9 +68,9 @@ export const BackgroundRippleEffect = ({
           borderColor="var(--cell-border-color)"
           fillColor="var(--cell-fill-color)"
           clickedCell={clickedCell}
-          onCellClick={(row, col) => {
+          onCellClick={(row: number, col: number) => {
             setClickedCell({ row, col });
-            setRippleKey((k) => k + 1);
+            setRippleKey((k: number) => k + 1);
           }}
           interactive
         />

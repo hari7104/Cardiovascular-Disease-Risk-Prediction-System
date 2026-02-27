@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-export default function Stepper({ step, total = 3 }) {
+export default function Stepper({ step, total = 1 }) {
   const pct = Math.min(100, Math.max(0, ((step - 1) / (total - 1)) * 100))
   return (
     <div className="w-full">

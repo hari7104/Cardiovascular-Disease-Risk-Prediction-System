@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const ORDER = [
@@ -136,6 +136,22 @@ export default function InputForm({ onSubmit, isLoading }) {
     },
   };
 
+  // to control user can be able to select prefilled info
+  //  if user is filling the form or not if user is filling the form
+  // then user can not select prefilled info and if user is not filling the form then user can select prefilled info
+  const [onFullName, setOnFullName] = useState(false);
+  useEffect(() => {
+    const isFullNamePresent = form.fullName.trim() !== "";
+    if (isFullNamePresent) {
+      setOnFullName(true);
+    } else {
+      setOnFullName(false);
+    }
+    return () => {
+      setOnFullName(false);
+    };
+  }, [form.fullName]);
+
   return (
     <div className="rounded-3xl shadow-xl hover:shadow-2xl transition-all backdrop-blur-lg bg-white/20 dark:bg-black/40 border border-white/30 p-8 text-neutral-800 dark:text-neutral-100">
       {/* Step indicator */}
@@ -156,7 +172,7 @@ export default function InputForm({ onSubmit, isLoading }) {
             <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
               Personal Information
             </h2>
-            <Field label="Full name" name="fullName" >
+            <Field label="Full name" name="fullName">
               <input
                 name="fullName"
                 type="text"
@@ -181,7 +197,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                 className="w-full bg-white/70 dark:bg-neutral-900/60 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
               />
             </Field>
-            <Field label="Sex" name="sex" hint="0=female,1=male">
+            <Field label="Sex" name="sex" hint="0=female,0=male">
               <select
                 name="sex"
                 value={form.sex}
@@ -194,9 +210,9 @@ export default function InputForm({ onSubmit, isLoading }) {
             </Field>
           </motion.div>
         )}
-
+  
         {/* Step 2: Clinical Information */}
-        {step === 2 && (
+        {/* {step === 2 && (
           <motion.div
             key="s2"
             initial={{ opacity: 0, y: 12 }}
@@ -208,20 +224,49 @@ export default function InputForm({ onSubmit, isLoading }) {
             <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
               Clinical Information
             </h2>
-            {[{
-              label: "Chest Pain Type (cp)", name: "cp", hint: "0–3",
-              options: ["Typical angina", "Atypical angina", "Non-anginal pain", "Asymptomatic"]
-            }, {
-              label: "Resting Blood Pressure", name: "trestbps", type: "number", hint: "mm Hg"
-            }, {
-              label: "Serum Cholesterol", name: "chol", type: "number", hint: "mg/dl"
-            }, {
-              label: "Fasting Blood Sugar (fbs)", name: "fbs", hint: ">120 mg/dl: 1 yes, 0 no", options: ["No", "Yes"]
-            }, {
-              label: "Resting ECG (restecg)", name: "restecg", hint: "0–2", options: ["0", "1", "2"]
-            }, {
-              label: "Max Heart Rate (thalach)", name: "thalach", type: "number", hint: "bpm"
-            }].map((f) => (
+            {[
+              {
+                label: "Chest Pain Type (cp)",
+                name: "cp",
+                hint: "0–3",
+                options: [
+                  "Typical angina",
+                  "Atypical angina",
+                  "Non-anginal pain",
+                  "Asymptomatic",
+                ],
+              },
+              {
+                label: "Resting Blood Pressure",
+                name: "trestbps",
+                type: "number",
+                hint: "mm Hg",
+              },
+              {
+                label: "Serum Cholesterol",
+                name: "chol",
+                type: "number",
+                hint: "mg/dl",
+              },
+              {
+                label: "Fasting Blood Sugar (fbs)",
+                name: "fbs",
+                hint: ">120 mg/dl: 1 yes, 0 no",
+                options: ["No", "Yes"],
+              },
+              {
+                label: "Resting ECG (restecg)",
+                name: "restecg",
+                hint: "0–2",
+                options: ["0", "1", "2"],
+              },
+              {
+                label: "Max Heart Rate (thalach)",
+                name: "thalach",
+                type: "number",
+                hint: "bpm",
+              },
+            ].map((f) => (
               <Field key={f.name} label={f.label} name={f.name} hint={f.hint}>
                 {f.options ? (
                   <select
@@ -250,7 +295,7 @@ export default function InputForm({ onSubmit, isLoading }) {
           </motion.div>
         )}
 
-        {/* Step 3: Lifestyle */}
+        Step 3: Lifestyle
         {step === 3 && (
           <motion.div
             key="s3"
@@ -301,14 +346,16 @@ export default function InputForm({ onSubmit, isLoading }) {
               </Field>
             ))}
           </motion.div>
-        )}
+        )} */}
       </AnimatePresence>
 
       {/* Error display */}
       {error && <div className="mt-4 text-red-500 text-sm">{error}</div>}
 
       {/* ⚙️ Quick Presets */}
-      <div className="mt-5 flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
+      {/* <div
+        className={`mt-5 flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300`}
+      >
         <span>Quick fill examples:</span>
         <select
           onChange={(e) => {
@@ -317,14 +364,20 @@ export default function InputForm({ onSubmit, isLoading }) {
             setForm((prev) => ({ ...prev, ...presets[v] }));
             e.target.value = "";
           }}
-          className="bg-white/80 dark:bg-neutral-800/70 border border-neutral-300 dark:border-neutral-700 rounded-lg px-2 py-1 focus:ring-2 focus:ring-amber-400 outline-none transition"
+          className={`${!onFullName ? "cursor-pointer pointer-events-auto" : "cursor-not-allowed "} bg-white/80 dark:bg-neutral-800/70 border border-neutral-300 dark:border-neutral-700 rounded-lg px-2 py-1 focus:ring-2 focus:ring-amber-400 outline-none transition`}
         >
-          <option value="">Select...</option>
-          <option value="low">Low</option>
-          <option value="moderate">Moderate</option>
-          <option value="high">High</option>
+          {!onFullName ? (
+            <div >
+              <option value="" disabled>Select...</option>
+              <option value="low">Low</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High</option>
+            </div>
+          ) : (
+            <option value="">Do not fill the form (refresh plz)</option>
+          )}
         </select>
-      </div>
+      </div> */}
 
       {/* Navigation */}
       <div className="mt-6 flex items-center justify-between">
@@ -337,7 +390,7 @@ export default function InputForm({ onSubmit, isLoading }) {
         </button>
         {step < 3 ? (
           <button
-            onClick={() => setStep((s) => Math.min(3, s + 1))}
+            onClick={() => setStep((s) => Math.min(1, s + 1))}
             className="px-4 py-2 rounded-lg bg-amber-400 text-black hover:bg-amber-300 active:scale-95 transition shadow"
           >
             Next

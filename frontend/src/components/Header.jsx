@@ -4,13 +4,11 @@ import { HeartPulse } from "lucide-react";
 import ThemeToggle from "./ThemeToggle.jsx";
 import { useEffect, useState } from "react";
 
-export default function Header() {
-  const [name, setName] = useState("");
-
-  useEffect(() => {
-    const savedName = localStorage.getItem("userName") || "Guest";
-    setName(savedName);
-  }, []);
+export default function Header({ setUser, user }) {
+  const handleLogOut = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+  };
 
   return (
     <>
@@ -30,13 +28,14 @@ export default function Header() {
             <motion.div
               className="relative flex items-center justify-center"
               animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 2.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
               <div className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-400/20 blur-md" />
-              <HeartPulse
-                size={20}
-                className="text-amber-400 sm:size-6"
-              />
+              <HeartPulse size={20} className="text-amber-400 sm:size-6" />
             </motion.div>
 
             <div className="flex flex-col leading-tight truncate">
@@ -50,7 +49,7 @@ export default function Header() {
               >
                 Cardiovascular Risk Predictor
               </h1>
-              <p className="text-[10px] xs:text-xs text-neutral-600 dark:text-neutral-400 truncate">
+              <p className="text-[12px] xs:text-xs text-neutral-600 dark:text-neutral-400 truncate">
                 Stay Healthy ❤️
               </p>
             </div>
@@ -58,6 +57,14 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
+            {user ? (
+              <button
+                onClick={handleLogOut}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/70 dark:bg-red-500/80 border border-black/5 dark:border-white/10 text-sm hover:bg-white/90 dark:hover:bg-white/20 transition-all duration-100 hover:duration-150 hover:transition-all"
+              >
+                Logout
+              </button>
+            ) : null}
           </div>
         </div>
       </header>

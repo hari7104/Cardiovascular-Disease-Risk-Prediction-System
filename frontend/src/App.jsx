@@ -1,17 +1,14 @@
 // src/App.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./components/Header.jsx";
-import { BackgroundRippleEffect } from "./components/ui/background-ripple-effect";
+import { BackgroundRippleEffect } from "./components/ui/background-ripple-effect.tsx";
 import InputForm from "./components/InputForm.jsx";
 import ResultCard from "./components/ResultCard.jsx";
+import AuthContainer from "./pages/AuthContainer.jsx";
 
 // ✅ Clean & correct Render-based API fallback logic
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  (window.location.hostname === "localhost"
-    ? "http://localhost:4000"
-    : "https://cvd-backend-w8p6.onrender.com");
+const API_BASE_URL = "http://localhost:10000"; // Update with your backend URL
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,43 +40,59 @@ export default function App() {
     }
   };
 
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
   const reset = () => setResult(null);
+
+
+
+
 
   return (
     <div className="relative min-h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 text-[#1C1C1C] dark:text-white overflow-x-hidden">
       <BackgroundRippleEffect />
-      <Header />
+      <Header user={user} setUser={setUser} />
+      {user ? (
+        <main className="relative z-10 flex-grow">
+          <div className="max-w-4xl mx-auto px-4 pb-28 space-y-8">
+            {error && (
+              <div className="rounded-lg p-3 bg-danger/10 text-danger border border-danger/20">
+                {String(error)}
+              </div>
+            )}
 
-      <main className="relative z-10 flex-grow">
-        <div className="max-w-4xl mx-auto px-4 pb-28 space-y-8">
-          {error && (
-            <div className="rounded-lg p-3 bg-danger/10 text-danger border border-danger/20">
-              {String(error)}
-            </div>
-          )}
+            {!result ? (
+              <InputForm onSubmit={submit} isLoading={isLoading} />
+            ) : (
+              <div id="result">
+                <ResultCard result={result} onReset={reset} />
+              </div>
+            )}
+          </div>
+        </main>
+      ) : (
+        <AuthContainer setUser={setUser} />
+      )}
 
-          {!result ? (
-            <InputForm onSubmit={submit} isLoading={isLoading} />
-          ) : (
-            <div id="result">
-              <ResultCard result={result} onReset={reset} />
-            </div>
-          )}
-        </div>
-      </main>
-
-<footer className="
+      <footer
+        className="
   fixed bottom-0 left-0 w-full z-50 px-3
   backdrop-blur-md bg-white/50 dark:bg-black/30
   border-t border-white/20 dark:border-white/10
   text-[10px] sm:text-xs text-gray-700 dark:text-gray-400 py-2
-">
-  <div className="flex justify-between items-center gap-1 max-w-4xl mx-auto">
-    <span>© 2025 CV Risk</span>
-    <span className="hidden sm:inline">• Built by Mirza & Team</span>
-  </div>
-</footer>
-
+"
+      >
+        <div className="flex justify-between items-center gap-1 max-w-4xl mx-auto">
+          <span>© 2025 CV Risk</span>
+          {/* <span className="hidden sm:inline">• Built by </span> */}
+        </div>
+      </footer>
     </div>
   );
 }
