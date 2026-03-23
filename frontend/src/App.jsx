@@ -6,6 +6,7 @@ import { BackgroundRippleEffect } from "./components/ui/background-ripple-effect
 import InputForm from "./components/InputForm.jsx";
 import ResultCard from "./components/ResultCard.jsx";
 import AuthContainer from "./pages/AuthContainer.jsx";
+import useUser from "./hooks/useUser.jsx";
 
 // ✅ Clean & correct Render-based API fallback logic
 const API_BASE_URL = "http://localhost:10000"; // Update with your backend URL
@@ -40,23 +41,20 @@ export default function App() {
     }
   };
 
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUser();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser) {
+  //     setUser(JSON.parse(storedUser));
+  //   }
+  // }, []);
   const reset = () => setResult(null);
-
-
-
-
 
   return (
     <div className="relative min-h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950 text-[#1C1C1C] dark:text-white overflow-x-hidden">
       <BackgroundRippleEffect />
+
       <Header user={user} setUser={setUser} />
       {user ? (
         <main className="relative z-10 flex-grow">
@@ -90,7 +88,7 @@ export default function App() {
       >
         <div className="flex justify-between items-center gap-1 max-w-4xl mx-auto">
           <span>© 2025 CV Risk</span>
-          {/* <span className="hidden sm:inline">• Built by </span> */}
+          <span className="hidden sm:inline">• Built by Hari & Naijil </span>
         </div>
       </footer>
     </div>

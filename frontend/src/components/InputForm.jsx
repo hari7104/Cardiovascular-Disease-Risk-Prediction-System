@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useEffectEvent, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import useUser from "../hooks/useUser";
 
 const ORDER = [
   "age",
@@ -33,13 +34,13 @@ function Field({ label, name, children, hint }) {
     </div>
   );
 }
-
 export default function InputForm({ onSubmit, isLoading }) {
   const [step, setStep] = useState(1);
+  const {user} = useUser();
   const [form, setForm] = useState({
-    fullName: "",
+    fullName: user?.username ? user?.username.split("@")[0] : "",
     age: "",
-    sex: "0",
+    sex: "1",
     cp: "0",
     trestbps: "",
     chol: "",
@@ -82,7 +83,7 @@ export default function InputForm({ onSubmit, isLoading }) {
     ORDER.forEach((k) => {
       payload[k] = Number(form[k]);
     });
-    onSubmit(payload);
+    // onSubmit(payload);
   };
 
   const presets = {
@@ -140,18 +141,17 @@ export default function InputForm({ onSubmit, isLoading }) {
   //  if user is filling the form or not if user is filling the form
   // then user can not select prefilled info and if user is not filling the form then user can select prefilled info
   const [onFullName, setOnFullName] = useState(false);
-  useEffect(() => {
-    const isFullNamePresent = form.fullName.trim() !== "";
-    if (isFullNamePresent) {
-      setOnFullName(true);
-    } else {
-      setOnFullName(false);
-    }
-    return () => {
-      setOnFullName(false);
-    };
-  }, [form.fullName]);
-
+  // useEffect(() => {
+  //   const isFullNamePresent = form.fullName.trim() !== "";
+  //   if (isFullNamePresent) {
+  //     setOnFullName(true);
+  //   } else {
+  //     setOnFullName(false);
+  //   }
+  //   return () => {
+  //     setOnFullName(false);
+  //   };
+  // }, [form.fullName]);
   return (
     <div className="rounded-3xl shadow-xl hover:shadow-2xl transition-all backdrop-blur-lg bg-white/20 dark:bg-black/40 border border-white/30 p-8 text-neutral-800 dark:text-neutral-100">
       {/* Step indicator */}
@@ -197,22 +197,21 @@ export default function InputForm({ onSubmit, isLoading }) {
                 className="w-full bg-white/70 dark:bg-neutral-900/60 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
               />
             </Field>
-            <Field label="Sex" name="sex" hint="0=female,0=male">
+            <Field label="Sex" name="sex">
               <select
                 name="sex"
                 value={form.sex}
                 onChange={onChange}
                 className="w-full bg-white/90 dark:bg-neutral-900/80 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
               >
-                <option value="0">Female</option>
                 <option value="1">Male</option>
+                <option value="0">Female</option>
               </select>
             </Field>
           </motion.div>
         )}
-  
         {/* Step 2: Clinical Information */}
-        {/* {step === 2 && (
+        {step === 2 && (
           <motion.div
             key="s2"
             initial={{ opacity: 0, y: 12 }}
@@ -294,7 +293,6 @@ export default function InputForm({ onSubmit, isLoading }) {
             ))}
           </motion.div>
         )}
-
         Step 3: Lifestyle
         {step === 3 && (
           <motion.div
@@ -308,17 +306,38 @@ export default function InputForm({ onSubmit, isLoading }) {
             <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
               Lifestyle & Test Results
             </h2>
-            {[{
-              label: "Exercise-induced Angina (exang)", name: "exang", hint: "1 yes, 0 no", options: ["No", "Yes"]
-            }, {
-              label: "ST Depression (oldpeak)", name: "oldpeak", type: "number", step: "0.1"
-            }, {
-              label: "Slope of Peak Exercise ST", name: "slope", hint: "0–2", options: ["0", "1", "2"]
-            }, {
-              label: "Smoking (placeholder uses ca)", name: "ca", hint: "0–3", options: ["0", "1", "2", "3"]
-            }, {
-              label: "Thalassemia (thal)", name: "thal", hint: "0–3", options: ["0", "1", "2", "3"]
-            }].map((f) => (
+            {[
+              {
+                label: "Exercise-induced Angina (exang)",
+                name: "exang",
+                hint: "1 yes, 0 no",
+                options: ["No", "Yes"],
+              },
+              {
+                label: "ST Depression (oldpeak)",
+                name: "oldpeak",
+                type: "number",
+                step: "0.1",
+              },
+              {
+                label: "Slope of Peak Exercise ST",
+                name: "slope",
+                hint: "0–2",
+                options: ["0", "1", "2"],
+              },
+              {
+                label: "Smoking (placeholder uses ca)",
+                name: "ca",
+                hint: "0–3",
+                options: ["0", "1", "2", "3"],
+              },
+              {
+                label: "Thalassemia (thal)",
+                name: "thal",
+                hint: "0–3",
+                options: ["0", "1", "2", "3"],
+              },
+            ].map((f) => (
               <Field key={f.name} label={f.label} name={f.name} hint={f.hint}>
                 {f.options ? (
                   <select
@@ -346,14 +365,14 @@ export default function InputForm({ onSubmit, isLoading }) {
               </Field>
             ))}
           </motion.div>
-        )} */}
+        )}
       </AnimatePresence>
 
       {/* Error display */}
       {error && <div className="mt-4 text-red-500 text-sm">{error}</div>}
 
       {/* ⚙️ Quick Presets */}
-      {/* <div
+      <div
         className={`mt-5 flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300`}
       >
         <span>Quick fill examples:</span>
@@ -362,22 +381,14 @@ export default function InputForm({ onSubmit, isLoading }) {
             const v = e.target.value;
             if (!v) return;
             setForm((prev) => ({ ...prev, ...presets[v] }));
-            e.target.value = "";
           }}
-          className={`${!onFullName ? "cursor-pointer pointer-events-auto" : "cursor-not-allowed "} bg-white/80 dark:bg-neutral-800/70 border border-neutral-300 dark:border-neutral-700 rounded-lg px-2 py-1 focus:ring-2 focus:ring-amber-400 outline-none transition`}
+          className={` bg-white/80 dark:bg-neutral-800/70 border border-neutral-300 dark:border-neutral-700 rounded-lg px-2 py-1 focus:ring-2 focus:ring-amber-400 outline-none transition`}
         >
-          {!onFullName ? (
-            <div >
-              <option value="" disabled>Select...</option>
-              <option value="low">Low</option>
-              <option value="moderate">Moderate</option>
-              <option value="high">High</option>
-            </div>
-          ) : (
-            <option value="">Do not fill the form (refresh plz)</option>
-          )}
+          <option value="low">Low </option>
+          <option value="moderate">Moderate</option>
+          <option value="high">High</option>
         </select>
-      </div> */}
+      </div>
 
       {/* Navigation */}
       <div className="mt-6 flex items-center justify-between">
@@ -390,7 +401,7 @@ export default function InputForm({ onSubmit, isLoading }) {
         </button>
         {step < 3 ? (
           <button
-            onClick={() => setStep((s) => Math.min(1, s + 1))}
+            onClick={() => setStep((s) => Math.min(3, s + 1))}
             className="px-4 py-2 rounded-lg bg-amber-400 text-black hover:bg-amber-300 active:scale-95 transition shadow"
           >
             Next

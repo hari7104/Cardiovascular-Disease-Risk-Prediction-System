@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/utils";
 
 export const BackgroundRippleEffect = ({
-  rows = 8,
+  rows = 14,
   cols = 27,
   cellSize = 56,
 }: any) => {
@@ -45,7 +45,7 @@ export const BackgroundRippleEffect = ({
       const col = Math.floor(Math.random() * cols)
       setClickedCell({ row, col })
       setRippleKey((k: number) => k + 1)
-    }, 4000)
+    }, 3000)
     return () => clearInterval(id)
   }, [])
 

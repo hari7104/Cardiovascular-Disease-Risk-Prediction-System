@@ -6,11 +6,16 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
 
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
   // ✅ Required for Vercel: SPA mode routing support
   build: {
     outDir: "dist",
     assetsDir: "assets",
-    sourcemap: false,
+    sourcemap: true,
   },
 
   server: {
@@ -18,11 +23,6 @@ export default defineConfig({
     open: true,
   },
 
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
 
   // ✅ Ensure browser history works on Vercel
   optimizeDeps: {
