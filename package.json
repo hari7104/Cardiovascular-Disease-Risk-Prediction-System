@@ -1,0 +1,28 @@
+{
+  "name": "cardiovascular-disease-risk-prediction-system",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muh-habeebe/Cardiovascular-Disease-Risk-Prediction-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/muh-habeebe/Cardiovascular-Disease-Risk-Prediction-System/issues"
+  },
+  "homepage": "https://github.com/muh-habeebe/Cardiovascular-Disease-Risk-Prediction-System#readme",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

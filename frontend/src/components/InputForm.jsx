@@ -22,10 +22,10 @@ const ORDER = [
 function Field({ label, name, children, hint }) {
   return (
     <div className="space-y-1">
-      <label className="flex items-center gap-2 text-sm text-neutral-800 dark:text-neutral-100">
-        <span>{label}</span>
+      <label className="flex items-center gap-2 text-sm opacity-90">
+        <span className="font-medium">{label}</span>
         {hint && (
-          <span className="text-xs text-neutral-500 dark:text-neutral-400">
+          <span className="text-xs opacity-200 ">
             ({hint})
           </span>
         )}
@@ -83,7 +83,7 @@ export default function InputForm({ onSubmit, isLoading }) {
     ORDER.forEach((k) => {
       payload[k] = Number(form[k]);
     });
-    // onSubmit(payload);
+    onSubmit(payload);
   };
 
   const presets = {
@@ -153,11 +153,11 @@ export default function InputForm({ onSubmit, isLoading }) {
   //   };
   // }, [form.fullName]);
   return (
-    <div className="rounded-3xl shadow-xl hover:shadow-2xl transition-all backdrop-blur-lg bg-white/20 dark:bg-black/40 border border-white/30 p-8 text-neutral-800 dark:text-neutral-100">
-      {/* Step indicator */}
-      <div className="flex justify-center mb-4 text-sm text-neutral-700 dark:text-neutral-300">
-        Step {step} of 3
-      </div>
+// NEW LINE 125:
+<div className="rounded-3xl shadow-xl hover:shadow-2xl transition-all backdrop-blur-lg bg-zinc-900 text-white dark:bg-white dark:text-black border border-white/30 p-8">      {/* Step indicator */}
+      <div className="flex justify-center mb-4 text-sm opacity-70">
+  Step {step} of 3
+</div>
 
       <AnimatePresence mode="wait">
         {step === 1 && (
@@ -169,9 +169,9 @@ export default function InputForm({ onSubmit, isLoading }) {
             transition={{ duration: 0.25 }}
             className="space-y-4"
           >
-            <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
-              Personal Information
-            </h2>
+            <h2 className="text-xl font-bold text-inherit">
+  Personal Information
+</h2>
             <Field label="Full name" name="fullName">
               <input
                 name="fullName"
@@ -179,14 +179,13 @@ export default function InputForm({ onSubmit, isLoading }) {
                 placeholder="Enter Your Full Name "
                 value={form.fullName}
                 onChange={onChange}
-                className="w-full bg-white/70 dark:bg-neutral-900/60 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
+               className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
               />
             </Field>
             {form.fullName && (
-              <div className="text-sm text-neutral-700 dark:text-neutral-300">
-                Hey <span className="font-semibold">{form.fullName}</span> —
-                let’s check your heart.
-              </div>
+              <div className="text-sm opacity-80">
+  Hey <span className="font-semibold">{form.fullName}</span> — let’s check your heart.
+</div>
             )}
             <Field label="Age" name="age" hint="years">
               <input
@@ -194,7 +193,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                 type="number"
                 value={form.age}
                 onChange={onChange}
-                className="w-full bg-white/70 dark:bg-neutral-900/60 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
+                className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
               />
             </Field>
             <Field label="Sex" name="sex">
@@ -202,7 +201,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                 name="sex"
                 value={form.sex}
                 onChange={onChange}
-                className="w-full bg-white/90 dark:bg-neutral-900/80 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
+                className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all [&>option]:text-black"
               >
                 <option value="1">Male</option>
                 <option value="0">Female</option>
@@ -220,7 +219,7 @@ export default function InputForm({ onSubmit, isLoading }) {
             transition={{ duration: 0.25 }}
             className="space-y-4"
           >
-            <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
+            <h2 className="text-xl font-bold text-inherit">
               Clinical Information
             </h2>
             {[
@@ -272,7 +271,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                     name={f.name}
                     value={form[f.name]}
                     onChange={onChange}
-                    className="w-full bg-white/90 dark:bg-neutral-900/80 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
+                    className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all [&>option]:text-black"
                   >
                     {f.options.map((o, i) => (
                       <option key={i} value={i}>
@@ -286,7 +285,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                     type={f.type}
                     value={form[f.name]}
                     onChange={onChange}
-                    className="w-full bg-white/70 dark:bg-neutral-900/60 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
+                    className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
                   />
                 )}
               </Field>
@@ -303,8 +302,7 @@ export default function InputForm({ onSubmit, isLoading }) {
             transition={{ duration: 0.25 }}
             className="space-y-4"
           >
-            <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
-              Lifestyle & Test Results
+<h2 className="text-xl font-bold text-inherit">              Lifestyle & Test Results
             </h2>
             {[
               {
@@ -344,8 +342,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                     name={f.name}
                     value={form[f.name]}
                     onChange={onChange}
-                    className="w-full bg-white/90 dark:bg-neutral-900/80 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
-                  >
+className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all [&>option]:text-black"                  >
                     {f.options.map((o, i) => (
                       <option key={i} value={i}>
                         {o}
@@ -359,8 +356,7 @@ export default function InputForm({ onSubmit, isLoading }) {
                     step={f.step}
                     value={form[f.name]}
                     onChange={onChange}
-                    className="w-full bg-white/70 dark:bg-neutral-900/60 text-neutral-800 dark:text-neutral-100 border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"
-                  />
+className="w-full bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-400 outline-none transition-all"                  />
                 )}
               </Field>
             ))}
@@ -373,7 +369,7 @@ export default function InputForm({ onSubmit, isLoading }) {
 
       {/* ⚙️ Quick Presets */}
       <div
-        className={`mt-5 flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300`}
+        className={`mt-5 flex items-center gap-2 text-sm opacity-70`}
       >
         <span>Quick fill examples:</span>
         <select
@@ -382,8 +378,7 @@ export default function InputForm({ onSubmit, isLoading }) {
             if (!v) return;
             setForm((prev) => ({ ...prev, ...presets[v] }));
           }}
-          className={` bg-white/80 dark:bg-neutral-800/70 border border-neutral-300 dark:border-neutral-700 rounded-lg px-2 py-1 focus:ring-2 focus:ring-amber-400 outline-none transition`}
-        >
+className="bg-white/10 dark:bg-black/5 text-inherit border border-white/20 dark:border-black/10 rounded-lg px-2 py-1 focus:ring-2 focus:ring-amber-400 outline-none transition [&>option]:text-black"        >
           <option value="low">Low </option>
           <option value="moderate">Moderate</option>
           <option value="high">High</option>
@@ -393,7 +388,6 @@ export default function InputForm({ onSubmit, isLoading }) {
       {/* Navigation */}
       <div className="mt-6 flex items-center justify-between">
         <button
-          disabled={step === 1}
           onClick={() => setStep((s) => Math.max(1, s - 1))}
           className="px-4 py-2 rounded-lg bg-white/80 dark:bg-neutral-800/70 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700 hover:bg-white/90 dark:hover:bg-neutral-700 disabled:opacity-50 active:scale-95 transition"
         >

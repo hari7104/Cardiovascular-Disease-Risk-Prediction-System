@@ -35,21 +35,21 @@ export default function Header({ setUser, user }) {
               }}
             >
               <div className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-400/20 blur-md" />
-              <HeartPulse size={20} className="text-amber-400 sm:size-6" />
+              <HeartPulse size={0} className="text-amber-400 sm:size-12" />
             </motion.div>
 
             <div className="flex flex-col leading-tight truncate">
               <h1
                 className="
-                  text-sm xs:text-base sm:text-lg md:text-2xl
+                  text-sm xs:text-base sm:text-lg md:text-3xl
                   font-semibold 
                   text-neutral-900 dark:text-white 
                   tracking-tight truncate
                 "
               >
-                Cardiovascular Risk Predictor
+                CVD Risk Predictor
               </h1>
-              <p className="text-[12px] xs:text-xs text-neutral-600 dark:text-neutral-400 truncate">
+              <p className="text-[15px] xs:text-xs text-neutral-600 dark:text-neutral-400 truncate">
                 Stay Healthy ❤️
               </p>
             </div>
